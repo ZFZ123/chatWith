@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <h1 class="tit">微聊</h1>
+      <div class="wrap">
+        <ul id="list">
+            <!--<li>
+                <img src="images/2.jpg" alt="">
+                <p>三十多岁的顶顶顶顶顶试试事实上顶顶顶顶</p>
+            </li>
+            <li class="self">
+                <img src="images/self.jpg" alt="">
+                <p>呵呵呵</p>
+            </li>-->
+        </ul>
+        <div class="fun">
+            <input type="" id="send-text" value="">
+            <button type="" id="send-btn">发送</button>
+            <button id="change-name">改名</button>
+            <button id="change-pic">改头像</button>
+        </div>
+    </div>
+    <div>
+      
+       
+    </div>
+
+    <script src="js/socket.io.js"></script>
+    <script>
+        var socket = io.connect("192.168.11.129:8080");
+        var oSendText =document.getElementById("send-text");
+        var oSendBtn =document.getElementById("send-btn");
+        var oList = document.getElementById("list");
+        var oChangeName = document.getElementById("change-name");
+        var oChangePic = document.getElementById("change-pic");
+        var selfInfo = {
+            username :"空的",
+            imgUrl:"images/self.jpg"
+        }
+
+        oSendBtn.onclick=function(){
+            //当按钮点击 发送消息
+            var msg = oSendText.value;
+              console.log(msg)
+            if(msg){
+                //发送给服务器端
+                socket.send(msg)
+                //显示自己的消息
+                var oLi =document.createElement("li");
+                oLi.innerHTML = ` <li class="self">
+                    <img src="${selfInfo.imgUrl}" alt="">
+                    <p style="word-break:break-all;
+         word-wrap:break-word">${msg}</p>
+                </li>`
+                oSendText.value='';
+                oList.appendChild(oLi);
+                oList.scrollTop = 99999999
+            }
+        };
+        document.onkeydown=function (evt) {
+            if (evt.keyCode == 13) {
+                //当按钮点击 发送消息
+                var msg = oSendText.value;
+                console.log(msg)
+
+                if (msg) {
+                    //发送给服务器端
+                    socket.send(msg);
+                    //显示自己的消息
+                    var oLi = document.createElement("li");
+                    oLi.innerHTML = ` <li class="self">
+                    <img src="${selfInfo.imgUrl}" alt="">
+                    <p>${msg}</p>
+                </li>`
+                    oList.appendChild(oLi);
+                    oList.scrollTop = 99999999;
+                    oSendText.value=''
+                }
+
+            }
+        }
+        //接收消息
+        socket.on("message",function(msgObj){
+            console.log(msgObj)
+
+            //显示别人的消息
+
+            var oLi =document.createElement("li")
+            oLi.innerHTML = ` <li>
+                <img src="${msgObj.userInfo.imgUrl}" alt="">
+                <p>${msgObj.userInfo.username} : ${msgObj.msg}</p>
+            </li>`
+
+            oList.appendChild(oLi)
+            oList.scrollTop = 99999999
+        })
+
+        //改名
+        oChangeName.onclick=function(){
+            var newName = window.prompt("请输入新昵称");
+            console.log(newName)
+            selfInfo.username = newName
+            // 触发改名的事件
+            socket.emit("changeName",newName)
+        }
+        //修改图像
+        oChangePic.onclick=function(){
+            var newPic = window.prompt("请输入图像的连接");
+            console.log(newPic)
+            selfInfo.imgUrl = newPic
+            // 触发改名的事件
+            socket.emit("changePic",newPic)
+        }
+    </script>
+</body>
+</html>

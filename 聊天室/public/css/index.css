@@ -1,0 +1,19 @@
+* { margin: 0; padding: 0;}
+input{outline: none;}
+body,html{height: 100%;width: 100%}
+.wrap { width: 100%; height: 100%; padding: 10px;margin-top: -40px;padding-top: 40px;padding-bottom: 55px;
+     box-sizing: border-box;border: 1px solid #ccc;border-radius: 5px;}
+#list { padding: 5px; background-color: #fff; height: 100%; overflow-y: auto}
+li { list-style: none; padding: 5px 0;overflow: hidden; }
+#list img { width: 50px; height: 50px; border-radius: 5px; margin: 5px; float: left }
+#list p { background-color: #fff; padding: 6px; border-radius: 5px; float: left; margin-top: 10px; max-width: 225px;}
+
+#list .self p,#list .self img { text-align: right;float: right; background-color: #6f5;}
+.tit{text-align: center;background:#fe5c1c;font-size: 26px;
+    color: #fff;height: 40px;line-height: 40px;
+    font-weight:100;}
+.fun{position: fixed;bottom: 0;height: 40px;width: 100%;left: 0}
+.fun input{height: 26px;border-radius: 5px;border: 1px solid #fe5c1c;width: 55%;
+    margin-left: 3%;text-indent: 10px}
+.fun button{width: auto;padding:0 4px;margin-left: 2px;border: 0;border-radius: 4px;margin-top: 2px;color: #fff;
+    height: 26px;background: #31b6eb}
